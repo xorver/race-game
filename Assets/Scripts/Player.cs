@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 
 	public float movementSpeed = 10;
 	public float turningSpeed = 60;
-	public float cityMapHeight = 100f;
+	public float cityMapWidth = 100f;
 
 	void Start ()
 	{
@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
 	public void Reset ()
 	{
-		transform.position = new Vector3 (-10f, 0.5f, cityMapHeight / 2);
+		transform.position = new Vector3 (cityMapWidth / 2, 0.5f, -10f);
+		transform.rotation = Quaternion.identity;
 	}
 }

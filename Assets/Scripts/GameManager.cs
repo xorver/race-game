@@ -1,34 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
 	public City cityPrefab;
-	public Player playerPrefab;
+	public Player playerInstance;
 
 	private City cityInstance;
-	private Player playerInstance;
 
-	void Start () {
+	void Start ()
+	{
 		BeginGame ();
 	}
-	
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			RestartGame();
+
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			RestartGame ();
 		}
 	}
 
-	private void BeginGame() {
+	private void BeginGame ()
+	{
 		cityInstance = Instantiate (cityPrefab) as City;
 		cityInstance.Generate ();
 
-		playerInstance = Instantiate (playerPrefab) as Player;
-		playerInstance.cityMapHeight = cityInstance.cityMapHeight;
+		playerInstance.cityMapWidth = cityInstance.cityMapWidth;
 		playerInstance.Reset ();
 	}
 
-	private void RestartGame() {
+	private void RestartGame ()
+	{
 		cityInstance.Regenerate ();
 		playerInstance.Reset ();
 	}
