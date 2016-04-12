@@ -6,6 +6,7 @@ public class City : MonoBehaviour
 
 	public Prism pavementPrefab;
 	public Prism buildingPrefab;
+	public Ground groundPrefab;
 
 	public float cityMapWidth = 100f;
 	public float cityMapHeight = 100f;
@@ -15,20 +16,15 @@ public class City : MonoBehaviour
 	public float streetDelta = 2f;
 	public float pavementDelta = 0.5f;
 
+	private Ground ground;
 	private List<Prism> pavements;
 	private List<Prism> buildings;
 
 	public void Generate ()
 	{
-		Orientation orientation = new Orientation ();
-		orientation.value = Orientation.Value.Horizontal;
+		ground = GenerateGround ();
 
-		List<Tetragon> tetragons = GenerateTetragons (new List<Tetragon> () { 
-			new Tetragon (
-				new Vector2 (0, cityMapHeight), new Vector2 (cityMapWidth, cityMapHeight), 
-				new Vector2 (cityMapWidth, 0), new Vector2 (0, 0)
-			)
-		}, cityPartitions, orientation);
+		List<Tetragon> tetragons = GenerateTetragons ();
 
 		List<Tetragon> pavementBases = GenerateInnerTetragons (ref tetragons, streetDelta);
 		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f)); 
@@ -39,19 +35,38 @@ public class City : MonoBehaviour
 
 	public void Regenerate ()
 	{
-		foreach (Prism pavement in pavements) 
-		{
+		Destroy (ground.gameObject);
+
+		foreach (Prism pavement in pavements) {
 			Destroy (pavement.gameObject);
 		}
-		pavements.Clear ();
 
-		foreach (Prism building in buildings) 
-		{
+		foreach (Prism building in buildings) {
 			Destroy (building.gameObject);
 		}
-		buildings.Clear ();
 
 		Generate ();
+	}
+
+	private Ground GenerateGround() {
+		Ground ground = Instantiate (groundPrefab) as Ground;
+		ground.width = cityMapWidth;
+		ground.height = cityMapHeight;
+
+		return ground;
+	}
+
+	private List<Tetragon> GenerateTetragons ()
+	{
+		Orientation orientation = new Orientation ();
+		orientation.value = Orientation.Value.Horizontal;
+
+		return GenerateTetragons (new List<Tetragon> () { 
+			new Tetragon (
+				new Vector2 (0, cityMapHeight), new Vector2 (cityMapWidth, cityMapHeight), 
+				new Vector2 (cityMapWidth, 0), new Vector2 (0, 0)
+			)
+		}, cityPartitions, orientation);
 	}
 
 	private List<Tetragon> GenerateTetragons (List<Tetragon> tetragons, uint partitions, Orientation orientation)
