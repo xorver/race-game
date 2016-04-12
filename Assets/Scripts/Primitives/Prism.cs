@@ -22,7 +22,6 @@ public class Prism : MonoBehaviour {
 
 	void Start () {
 		Mesh mesh = new Mesh();
-		GetComponent<MeshFilter>().mesh = mesh;
 
 		Vector3 v4 = v0 + Vector3.up * height;
 		Vector3 v5 = v1 + Vector3.up * height;
@@ -79,6 +78,10 @@ public class Prism : MonoBehaviour {
 
 		mesh.RecalculateBounds();
 		mesh.Optimize();
+
+		GetComponent<MeshFilter> ().mesh = mesh;
+		GetComponent<MeshCollider>().sharedMesh = null;
+		GetComponent<MeshCollider>().sharedMesh = mesh;
 	}
 
 }
