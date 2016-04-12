@@ -80,7 +80,6 @@ public class Prism : MonoBehaviour {
 		mesh.Optimize();
 
 		GetComponent<MeshFilter> ().mesh = mesh;
-		GetComponent<MeshCollider>().sharedMesh = null;
 		GetComponent<MeshCollider>().sharedMesh = mesh;
 	}
 
