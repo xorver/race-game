@@ -4,8 +4,10 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public City cityPrefab;
+	public Player playerPrefab;
 
 	private City cityInstance;
+	private Player playerInstance;
 
 	void Start () {
 		BeginGame ();
@@ -20,10 +22,15 @@ public class GameManager : MonoBehaviour {
 	private void BeginGame() {
 		cityInstance = Instantiate (cityPrefab) as City;
 		cityInstance.Generate ();
+
+		playerInstance = Instantiate (playerPrefab) as Player;
+		playerInstance.cityMapHeight = cityInstance.cityMapHeight;
+		playerInstance.Reset ();
 	}
 
 	private void RestartGame() {
 		cityInstance.Regenerate ();
+		playerInstance.Reset ();
 	}
 
 }
