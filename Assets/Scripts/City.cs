@@ -7,6 +7,7 @@ public class City : MonoBehaviour
 	public Prism pavementPrefab;
 	public Prism buildingPrefab;
 	public Ground groundPrefab;
+	public PickUp pickUpPrefab;
 
 	public float cityMapWidth = 100f;
 	public float cityMapHeight = 100f;
@@ -19,6 +20,7 @@ public class City : MonoBehaviour
 	private Ground ground;
 	private List<Prism> pavements;
 	private List<Prism> buildings;
+	private List<PickUp> pickUps;
 
 	public void Generate ()
 	{
@@ -30,7 +32,9 @@ public class City : MonoBehaviour
 		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f)); 
 
 		List<Tetragon> buildingBases = GenerateInnerTetragons (ref pavementBases, pavementDelta);
-		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight); 
+		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight);
+
+		pickUps = GeneratePickUps (ref tetragons);
 	}
 
 	public void Regenerate ()
@@ -43,6 +47,10 @@ public class City : MonoBehaviour
 
 		foreach (Prism building in buildings) {
 			Destroy (building.gameObject);
+		}
+
+		foreach (PickUp pickUp in pickUps) {
+			Destroy (pickUp.gameObject);
 		}
 
 		Generate ();
@@ -109,6 +117,41 @@ public class City : MonoBehaviour
 		}
 
 		return prisms;
+	}
+
+	private List<PickUp> GeneratePickUps(ref List<Tetragon> tetragons)
+	{
+		List<PickUp> pickUps = new List<PickUp> ();
+
+		foreach (Tetragon tetragon in tetragons) {
+			PickUp pickUp0 = Instantiate (pickUpPrefab) as PickUp;
+			Vector2 midPoint0 = RandomMidpoint (tetragon.v0, tetragon.v1);
+			pickUp0.transform.position = new Vector3 (midPoint0.x, 0.5f, midPoint0.y);
+			pickUps.Add (pickUp0);
+
+			PickUp pickUp1 = Instantiate (pickUpPrefab) as PickUp;
+			Vector2 midPoint1 = RandomMidpoint (tetragon.v1, tetragon.v2);
+			pickUp1.transform.position = new Vector3 (midPoint1.x, 0.5f, midPoint1.y);
+			pickUps.Add (pickUp1);
+
+			PickUp pickUp2 = Instantiate (pickUpPrefab) as PickUp;
+			Vector2 midPoint2 = RandomMidpoint (tetragon.v2, tetragon.v3);
+			pickUp2.transform.position = new Vector3 (midPoint2.x, 0.5f, midPoint2.y);
+			pickUps.Add (pickUp2);
+
+			PickUp pickUp3 = Instantiate (pickUpPrefab) as PickUp;
+			Vector2 midPoint3 = RandomMidpoint (tetragon.v3, tetragon.v0);
+			pickUp3.transform.position = new Vector3 (midPoint3.x, 0.5f, midPoint3.y);
+			pickUps.Add (pickUp3);
+		}
+
+		return pickUps;
+	}
+
+	private Vector2 RandomMidpoint (Vector2 v0, Vector2 v1)
+	{
+		Vector2 v = v1 - v0;
+		return v0 + v * Random.Range(0.2f, 0.8f);
 	}
 
 }
