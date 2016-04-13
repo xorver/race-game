@@ -4,7 +4,7 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
 
-	public float movementSpeed = 10;
+	public float movementSpeed = 1;
 	public float turningSpeed = 60;
 	public float cityMapWidth = 100f;
 
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 	void Update ()
 	{
 		float horizontal = Input.GetAxis ("Horizontal") * turningSpeed * Time.deltaTime;
-		transform.Rotate (0, horizontal, 0);
+		transform.RotateAround (transform.position, Vector3.up, horizontal);
 
 		float vertical = Input.GetAxis ("Vertical") * movementSpeed * Time.deltaTime;
 		transform.Translate (0, 0, vertical);
