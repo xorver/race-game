@@ -4,7 +4,7 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
 
-	public float movementSpeed = 1;
+	public float movementSpeed = 10;
 	public float turningSpeed = 60;
 	public float cityMapWidth = 100f;
 
@@ -26,5 +26,12 @@ public class Player : MonoBehaviour
 	{
 		transform.position = new Vector3 (cityMapWidth / 2, 0.5f, -10f);
 		transform.rotation = Quaternion.identity;
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.gameObject.CompareTag ("Pick Up")) {
+			other.gameObject.SetActive (false);
+		}
 	}
 }
