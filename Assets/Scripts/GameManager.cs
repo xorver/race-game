@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 		cityInstance.Generate ();
 
 		playerInstance.cityMapWidth = cityInstance.cityMapWidth;
+		playerInstance.pickUpsCount = (int) (4 * Mathf.Pow (2, cityInstance.cityPartitions));
 		playerInstance.Reset ();
 	}
 
