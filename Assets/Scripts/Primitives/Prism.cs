@@ -83,10 +83,7 @@ public class Prism : MonoBehaviour {
 
 		GetComponent<MeshFilter> ().mesh = mesh;
 		GetComponent<MeshCollider>().sharedMesh = mesh;
-
-		Texture2D tex = new Texture2D (1, 1);
-		tex.LoadImage (File.ReadAllBytes ("Assets/Textures/" + texture));
-		GetComponent<Renderer>().material.mainTexture = tex;
+		GetComponent<Renderer>().material.mainTexture =  Resources.Load("Textures/" + texture) as Texture2D;
 	}
 
 }

@@ -29,7 +29,7 @@ public class City : MonoBehaviour
 		List<Tetragon> tetragons = GenerateTetragons ();
 
 		List<Tetragon> pavementBases = GenerateInnerTetragons (ref tetragons, streetDelta);
-		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f), "Pavement.jpg"); 
+		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f), "Pavement"); 
 
 		List<Tetragon> buildingBases = GenerateInnerTetragons (ref pavementBases, pavementDelta);
 		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight, "");
@@ -106,7 +106,6 @@ public class City : MonoBehaviour
 	private List<Prism> GeneratePrisms (ref List<Tetragon> tetragons, ref Prism prismPrefab, Vector2 heightRange, string texture)
 	{
 		List<Prism> prisms = new List<Prism> ();
-		var random = new System.Random ();
 
 		foreach (Tetragon tetragon in tetragons) {
 			Prism prism = Instantiate (prismPrefab) as Prism;
@@ -115,7 +114,7 @@ public class City : MonoBehaviour
 			prism.v2 = new Vector3 (tetragon.v2.x, 0, tetragon.v2.y);
 			prism.v3 = new Vector3 (tetragon.v3.x, 0, tetragon.v3.y);
 			prism.height = Random.Range (heightRange.x, heightRange.y);
-			prism.texture = texture == "" ? GetBuildingTexture (ref random) : texture;
+			prism.texture = texture == "" ? GetBuildingTexture () : texture;
 			prisms.Add (prism);
 		}
 
@@ -157,18 +156,17 @@ public class City : MonoBehaviour
 		return v0 + v * Random.Range (0.2f, 0.8f);
 	}
 
-	private string GetBuildingTexture (ref System.Random random)
+	private string GetBuildingTexture ()
 	{
 		var textures = new List<string> {
-			"Building01.jpg",
-			"Building02.jpg",
-			"Building03.jpg",
-			"Building04.jpg",
-			"Building05.jpg"
+			"Building01",
+			"Building02",
+			"Building03",
+			"Building04",
+			"Building05"
 		};
-		int index = random.Next (textures.Count);
 
-		return textures [index];
+		return textures [Random.Range(0, textures.Count - 1)];
 	}
 
 }
