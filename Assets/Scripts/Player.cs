@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 		score = 0;
 		SetScoreText ();
 		SetWinText ("");
-		transform.position = new Vector3 (cityMapWidth / 2, 0.5f, -10f);
+		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
 		transform.rotation = Quaternion.identity;
 	}
 
