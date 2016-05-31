@@ -29,10 +29,10 @@ public class City : MonoBehaviour
 		List<Tetragon> tetragons = GenerateTetragons ();
 
 		List<Tetragon> pavementBases = GenerateInnerTetragons (ref tetragons, streetDelta);
-		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f)); 
+		pavements = GeneratePrisms (ref pavementBases, ref pavementPrefab, new Vector2 (0.2f, 0.2f), "Pavement.jpg"); 
 
 		List<Tetragon> buildingBases = GenerateInnerTetragons (ref pavementBases, pavementDelta);
-		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight);
+		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight, "");
 
 		pickUps = GeneratePickUps (ref tetragons);
 	}
@@ -56,7 +56,8 @@ public class City : MonoBehaviour
 		Generate ();
 	}
 
-	private Ground GenerateGround() {
+	private Ground GenerateGround ()
+	{
 		Ground ground = Instantiate (groundPrefab) as Ground;
 		ground.width = cityMapWidth;
 		ground.height = cityMapHeight;
@@ -102,9 +103,10 @@ public class City : MonoBehaviour
 		return innerTetragons;
 	}
 
-	private List<Prism> GeneratePrisms (ref List<Tetragon> tetragons, ref Prism prismPrefab, Vector2 heightRange)
+	private List<Prism> GeneratePrisms (ref List<Tetragon> tetragons, ref Prism prismPrefab, Vector2 heightRange, string texture)
 	{
 		List<Prism> prisms = new List<Prism> ();
+		var random = new System.Random ();
 
 		foreach (Tetragon tetragon in tetragons) {
 			Prism prism = Instantiate (prismPrefab) as Prism;
@@ -113,13 +115,14 @@ public class City : MonoBehaviour
 			prism.v2 = new Vector3 (tetragon.v2.x, 0, tetragon.v2.y);
 			prism.v3 = new Vector3 (tetragon.v3.x, 0, tetragon.v3.y);
 			prism.height = Random.Range (heightRange.x, heightRange.y);
+			prism.texture = texture == "" ? GetBuildingTexture (ref random) : texture;
 			prisms.Add (prism);
 		}
 
 		return prisms;
 	}
 
-	private List<PickUp> GeneratePickUps(ref List<Tetragon> tetragons)
+	private List<PickUp> GeneratePickUps (ref List<Tetragon> tetragons)
 	{
 		List<PickUp> pickUps = new List<PickUp> ();
 
@@ -151,7 +154,21 @@ public class City : MonoBehaviour
 	private Vector2 RandomMidpoint (Vector2 v0, Vector2 v1)
 	{
 		Vector2 v = v1 - v0;
-		return v0 + v * Random.Range(0.2f, 0.8f);
+		return v0 + v * Random.Range (0.2f, 0.8f);
+	}
+
+	private string GetBuildingTexture (ref System.Random random)
+	{
+		var textures = new List<string> {
+			"Building01.jpg",
+			"Building02.jpg",
+			"Building03.jpg",
+			"Building04.jpg",
+			"Building05.jpg"
+		};
+		int index = random.Next (textures.Count);
+
+		return textures [index];
 	}
 
 }

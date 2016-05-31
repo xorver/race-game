@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
 	public int pickUpsCount;
 
 	private int score;
+	private float time = 0f;
 
 	void Start ()
 	{
@@ -21,11 +23,15 @@ public class Player : MonoBehaviour
 
 	void Update ()
 	{
+		time += Time.deltaTime;
+
 		float horizontal = Input.GetAxis ("Horizontal") * turningSpeed * Time.deltaTime;
 		transform.RotateAround (transform.position, Vector3.up, horizontal);
 
 		float vertical = Input.GetAxis ("Vertical") * movementSpeed * Time.deltaTime;
 		transform.Translate (0, 0, vertical);
+
+		SetScoreText ();
 	}
 
 	void OnTriggerEnter (Collider other)
@@ -40,6 +46,7 @@ public class Player : MonoBehaviour
 	public void Reset ()
 	{
 		score = 0;
+		time = 0f;
 		SetScoreText ();
 		SetWinText ("");
 		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
@@ -48,9 +55,10 @@ public class Player : MonoBehaviour
 
 	private void SetScoreText()
 	{
-		scoreText.text = "Score: " + score.ToString ();
+		scoreText.text = "Time: " + time.ToString("0.00") 
+			+ "\nScore: " + score.ToString ();
 		if (score >= pickUpsCount) {
-			SetWinText ("You Win!");
+			SetWinText ("You Win!\nTime: " + time.ToString("0.00"));
 		}
 	}
 
