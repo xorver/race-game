@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
+using System.Collections.Generic;
 
 public class Prism : MonoBehaviour {
 
@@ -81,6 +83,20 @@ public class Prism : MonoBehaviour {
 
 		GetComponent<MeshFilter> ().mesh = mesh;
 		GetComponent<MeshCollider>().sharedMesh = mesh;
+
+		var random = new System.Random();
+		var textures = new List<string>{
+			"Building01.jpg",
+			"Building02.jpg",
+			"Building03.jpg",
+			"Building04.jpg",
+			"Building05.jpg"
+		};
+		int index = random.Next(textures.Count);
+
+		Texture2D tex = new Texture2D(1, 1);
+		tex.LoadImage(File.ReadAllBytes("Assets/Textures/" + textures[index]));
+		GetComponent<Renderer>().material.mainTexture = tex;
 	}
 
 }
