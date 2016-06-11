@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
 	void Update ()
 	{
-		time += Time.deltaTime;
+		time -= Time.deltaTime;
 
 		float horizontal = Input.GetAxis ("Horizontal") * turningSpeed * Time.deltaTime;
 		transform.RotateAround (transform.position, Vector3.up, horizontal);
@@ -40,13 +40,19 @@ public class Player : MonoBehaviour
 			other.gameObject.SetActive (false);
 			score += 1;
 			SetScoreText ();
+		} else if (other.gameObject.CompareTag ("Human") && Input.GetAxis ("Vertical") > 0.0f) {
+			Human human = other.GetComponent<Human>();
+			if (human.isAlive ()) 
+				time -= 20;
+
+			human.kill ();
 		}
 	}
 
 	public void Reset ()
 	{
 		score = 0;
-		time = 0f;
+		time = 3 * 60f;
 		SetScoreText ();
 		SetWinText ("");
 		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
@@ -57,8 +63,12 @@ public class Player : MonoBehaviour
 	{
 		scoreText.text = "Time: " + time.ToString("0.00") 
 			+ "\nScore: " + score.ToString ();
-		if (score >= pickUpsCount) {
+		if (score >= pickUpsCount && time > 0) {
 			SetWinText ("You Win!\nTime: " + time.ToString("0.00"));
+		}
+
+		if (time < 0) {
+			SetWinText ("You Lose!\nScore: " + score.ToString("0"));
 		}
 	}
 
@@ -66,5 +76,4 @@ public class Player : MonoBehaviour
 	{
 		winText.text = text;
 	}
-
 }

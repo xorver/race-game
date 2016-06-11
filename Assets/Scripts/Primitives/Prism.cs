@@ -81,6 +81,9 @@ public class Prism : MonoBehaviour {
 		mesh.RecalculateBounds();
 		mesh.Optimize();
 
+		Rigidbody gameObjectsRigidBody = gameObject.AddComponent<Rigidbody>();
+		gameObjectsRigidBody.mass = 50000000; 
+
 		GetComponent<MeshFilter> ().mesh = mesh;
 		GetComponent<MeshCollider>().sharedMesh = mesh;
 		GetComponent<Renderer>().material.mainTexture =  Resources.Load("Textures/" + texture) as Texture2D;
