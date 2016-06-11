@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 
 	public Text scoreText;
 	public Text winText;
-	public float movementSpeed = 10;
+	public float movementSpeed = 15;
 	public float turningSpeed = 60;
 	public float cityMapWidth = 100f;
 	public int pickUpsCount;
@@ -16,8 +16,15 @@ public class Player : MonoBehaviour
 	private int score;
 	private float time = 0f;
 
+	private float accelerationTime;
+	private float maxAccelerationTime;
+	private float verticalAcceleration;
+
 	void Start ()
 	{
+		maxAccelerationTime = 3;
+		accelerationTime = 0;
+
 		Reset ();
 	}
 
@@ -25,10 +32,33 @@ public class Player : MonoBehaviour
 	{
 		time -= Time.deltaTime;
 
-		float horizontal = Input.GetAxis ("Horizontal") * turningSpeed * Time.deltaTime;
+		if (Input.GetAxis ("Vertical") > 0) {
+			accelerationTime += accelerationTime < 0 ? Time.deltaTime * 4 : Time.deltaTime;
+			accelerationTime = Math.Min (accelerationTime, maxAccelerationTime);
+		} else if (Input.GetAxis ("Vertical") < 0) {
+			accelerationTime -= accelerationTime > 0 ? Time.deltaTime * 4 : Time.deltaTime * 2;
+			accelerationTime = Math.Max (accelerationTime, maxAccelerationTime * -1);
+		} else {
+			if (accelerationTime < 0) {
+				accelerationTime += Time.deltaTime * 4;
+				accelerationTime = Math.Min (accelerationTime, 0.0f);
+			} else {
+				accelerationTime -= Time.deltaTime * 2;
+				accelerationTime = Math.Max (accelerationTime, 0.0f);
+			}
+		}
+			
+		float turningSpeedMod = 1.0f;
+		verticalAcceleration = accelerationTime / maxAccelerationTime;
+		if (verticalAcceleration < 0) {
+			verticalAcceleration /= 2;
+			turningSpeedMod *= 3;
+		}
+
+		float horizontal = Input.GetAxis ("Horizontal") * turningSpeed * Time.deltaTime * verticalAcceleration * turningSpeedMod;
 		transform.RotateAround (transform.position, Vector3.up, horizontal);
 
-		float vertical = Input.GetAxis ("Vertical") * movementSpeed * Time.deltaTime;
+		float vertical = verticalAcceleration * movementSpeed * Time.deltaTime;
 		transform.Translate (0, 0, vertical);
 
 		SetScoreText ();
@@ -40,7 +70,7 @@ public class Player : MonoBehaviour
 			other.gameObject.SetActive (false);
 			score += 1;
 			SetScoreText ();
-		} else if (other.gameObject.CompareTag ("Human") && Input.GetAxis ("Vertical") > 0.0f) {
+		} else if (other.gameObject.CompareTag ("Human") && Math.Abs(verticalAcceleration) > 0.05f) {
 			Human human = other.GetComponent<Human>();
 			if (human.isAlive ()) 
 				time -= 20;
