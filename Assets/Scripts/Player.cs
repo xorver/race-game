@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
 	private float accelerationTime;
 	private float maxAccelerationTime;
-	private float verticalAcceleration;
+	public float verticalAcceleration { get; private set; }
 
 	void Start ()
 	{
@@ -88,6 +88,8 @@ public class Player : MonoBehaviour
 		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
 		transform.rotation = Quaternion.identity;
 	}
+
+
 
 	private void SetScoreText()
 	{
