@@ -11,10 +11,6 @@ public class BloodPool : MonoBehaviour
 	IEnumerator Start ()
 	{
 		renderer0 = GetComponent<Renderer> ();
-		//Sets the material of the gameObject
-		renderer0.material = new Material (Shader.Find ("Transparent/Diffuse"));
-		renderer0.material.SetTexture("_MainTex", blood);
-//		renderer0.material.SetColor ("_SpecColor", Color.red);
 
 		yield return new WaitForSeconds(Random.value * 4.0f);
 
