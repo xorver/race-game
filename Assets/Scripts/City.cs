@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 public class City : MonoBehaviour
 {
-
+	public Human humanPrefab;
 	public Prism pavementPrefab;
 	public Prism buildingPrefab;
 	public Ground groundPrefab;
 	public PickUp pickUpPrefab;
+
 
 	public float cityMapWidth = 100f;
 	public float cityMapHeight = 100f;
@@ -21,9 +22,15 @@ public class City : MonoBehaviour
 	private List<Prism> pavements;
 	private List<Prism> buildings;
 	private List<PickUp> pickUps;
+	private List<Human> humans;
+
+	static Random random = new Random();
+
 
 	public void Generate ()
 	{
+		Random.seed = (int)System.DateTime.Now.Ticks;
+
 		ground = GenerateGround ();
 
 		List<Tetragon> tetragons = GenerateTetragons ();
@@ -35,6 +42,7 @@ public class City : MonoBehaviour
 		buildings = GeneratePrisms (ref buildingBases, ref buildingPrefab, buildingHeight, "");
 
 		pickUps = GeneratePickUps (ref tetragons);
+		humans = GenerateHumans (ref tetragons);
 	}
 
 	public void Regenerate ()
@@ -51,6 +59,10 @@ public class City : MonoBehaviour
 
 		foreach (PickUp pickUp in pickUps) {
 			Destroy (pickUp.gameObject);
+		}
+
+		foreach (Human human in humans) {
+			Destroy (human.gameObject);
 		}
 
 		Generate ();
@@ -150,6 +162,39 @@ public class City : MonoBehaviour
 		return pickUps;
 	}
 
+	private List<Human> GenerateHumans (ref List<Tetragon> tetragons)
+	{
+		List<Human> humans = new List<Human> ();
+		foreach (Tetragon tetragon in tetragons) {
+			float rnd0 = GetRandomNumber (0, streetDelta);
+			float rnd1 = GetRandomNumber (0, streetDelta);
+			float rnd2 = GetRandomNumber (0, streetDelta);
+			float rnd3 = GetRandomNumber (0, streetDelta);
+
+			Human human0 = Instantiate (humanPrefab) as Human;
+			Vector2 midPoint0 = RandomMidpoint (tetragon.v0, tetragon.v1);
+			human0.transform.position = new Vector3 (midPoint0.x + rnd0, 0.01f, midPoint0.y + rnd0);
+			humans.Add (human0);
+
+			Human human1 = Instantiate (humanPrefab) as Human;
+			Vector2 midPoint1 = RandomMidpoint (tetragon.v1, tetragon.v2);
+			human1.transform.position = new Vector3 (midPoint1.x + rnd1, 0.01f, midPoint1.y + rnd1);
+			humans.Add (human1);
+
+			Human human2 = Instantiate (humanPrefab) as Human;
+			Vector2 midPoint2 = RandomMidpoint (tetragon.v2, tetragon.v3);
+			human2.transform.position = new Vector3 (midPoint2.x + rnd2, 0.01f, midPoint2.y + rnd2);
+			humans.Add (human2);
+
+			Human human3 = Instantiate (humanPrefab) as Human;
+			Vector2 midPoint3 = RandomMidpoint (tetragon.v3, tetragon.v0);
+			human3.transform.position = new Vector3 (midPoint3.x + rnd3, 0.01f, midPoint3.y + rnd3);
+			humans.Add (human3);
+		}
+
+		return humans;
+	}
+
 	private Vector2 RandomMidpoint (Vector2 v0, Vector2 v1)
 	{
 		Vector2 v = v1 - v0;
@@ -167,6 +212,11 @@ public class City : MonoBehaviour
 		};
 
 		return textures [Random.Range(0, textures.Count - 1)];
+	}
+
+	public float GetRandomNumber(float minimum, float maximum)
+	{ 
+		return (float) Random.value * (maximum - minimum) + minimum;
 	}
 
 }
