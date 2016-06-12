@@ -145,6 +145,7 @@ public class City : MonoBehaviour
 
 			PickUp pickUpMinimap0 = Instantiate (pickUpMinimapPrefab) as PickUp;
 			pickUpMinimap0.transform.position = pickUp0.transform.position;
+			pickUpMinimap0.transform.parent = pickUp0.transform;
 			pickUps.Add (pickUpMinimap0);
 
 			PickUp pickUp1 = Instantiate (pickUpPrefab) as PickUp;
@@ -154,6 +155,7 @@ public class City : MonoBehaviour
 
 			PickUp pickUpMinimap1 = Instantiate (pickUpMinimapPrefab) as PickUp;
 			pickUpMinimap1.transform.position = pickUp1.transform.position;
+			pickUpMinimap1.transform.parent = pickUp1.transform;
 			pickUps.Add (pickUpMinimap1);
 
 			PickUp pickUp2 = Instantiate (pickUpPrefab) as PickUp;
@@ -163,6 +165,7 @@ public class City : MonoBehaviour
 
 			PickUp pickUpMinimap2 = Instantiate (pickUpMinimapPrefab) as PickUp;
 			pickUpMinimap2.transform.position = pickUp2.transform.position;
+			pickUpMinimap2.transform.parent = pickUp2.transform;
 			pickUps.Add (pickUpMinimap2);
 
 			PickUp pickUp3 = Instantiate (pickUpPrefab) as PickUp;
@@ -172,6 +175,7 @@ public class City : MonoBehaviour
 
 			PickUp pickUpMinimap3 = Instantiate (pickUpMinimapPrefab) as PickUp;
 			pickUpMinimap3.transform.position = pickUp3.transform.position;
+			pickUpMinimap3.transform.parent = pickUp3.transform;
 			pickUps.Add (pickUpMinimap3);
 		}
 
