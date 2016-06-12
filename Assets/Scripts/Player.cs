@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
 			other.gameObject.SetActive (false);
 			score += 1;
 			SetScoreText ();
-		} else if (other.gameObject.CompareTag ("Human") && Math.Abs(verticalAcceleration) > 0.05f) {
+		} else if (other.gameObject.CompareTag ("Human") && Math.Abs(verticalAcceleration) > 0.1f) {
 			Human human = other.GetComponent<Human>();
 			if (human.isAlive ()) 
 				time -= 20;
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
 	public void Reset ()
 	{
 		score = 0;
-		time = 3 * 60f;
+		time = 6 * 60f;
 		SetScoreText ();
 		SetWinText ("");
 		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
