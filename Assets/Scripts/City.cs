@@ -8,7 +8,7 @@ public class City : MonoBehaviour
 	public Prism buildingPrefab;
 	public Ground groundPrefab;
 	public PickUp pickUpPrefab;
-
+	public PickUp pickUpMinimapPrefab;
 
 	public float cityMapWidth = 100f;
 	public float cityMapHeight = 100f;
@@ -143,20 +143,36 @@ public class City : MonoBehaviour
 			pickUp0.transform.position = new Vector3 (midPoint0.x, 0.5f, midPoint0.y);
 			pickUps.Add (pickUp0);
 
+			PickUp pickUpMinimap0 = Instantiate (pickUpMinimapPrefab) as PickUp;
+			pickUpMinimap0.transform.position = pickUp0.transform.position;
+			pickUps.Add (pickUpMinimap0);
+
 			PickUp pickUp1 = Instantiate (pickUpPrefab) as PickUp;
 			Vector2 midPoint1 = RandomMidpoint (tetragon.v1, tetragon.v2);
 			pickUp1.transform.position = new Vector3 (midPoint1.x, 0.5f, midPoint1.y);
 			pickUps.Add (pickUp1);
+
+			PickUp pickUpMinimap1 = Instantiate (pickUpMinimapPrefab) as PickUp;
+			pickUpMinimap1.transform.position = pickUp1.transform.position;
+			pickUps.Add (pickUpMinimap1);
 
 			PickUp pickUp2 = Instantiate (pickUpPrefab) as PickUp;
 			Vector2 midPoint2 = RandomMidpoint (tetragon.v2, tetragon.v3);
 			pickUp2.transform.position = new Vector3 (midPoint2.x, 0.5f, midPoint2.y);
 			pickUps.Add (pickUp2);
 
+			PickUp pickUpMinimap2 = Instantiate (pickUpMinimapPrefab) as PickUp;
+			pickUpMinimap2.transform.position = pickUp2.transform.position;
+			pickUps.Add (pickUpMinimap2);
+
 			PickUp pickUp3 = Instantiate (pickUpPrefab) as PickUp;
 			Vector2 midPoint3 = RandomMidpoint (tetragon.v3, tetragon.v0);
 			pickUp3.transform.position = new Vector3 (midPoint3.x, 0.5f, midPoint3.y);
 			pickUps.Add (pickUp3);
+
+			PickUp pickUpMinimap3 = Instantiate (pickUpMinimapPrefab) as PickUp;
+			pickUpMinimap3.transform.position = pickUp3.transform.position;
+			pickUps.Add (pickUpMinimap3);
 		}
 
 		return pickUps;
