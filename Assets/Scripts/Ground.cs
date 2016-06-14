@@ -8,7 +8,8 @@ public class Ground : MonoBehaviour {
 
 	void Start () {
 		transform.position = new Vector3 (width / 2, 0, height / 2);
-		transform.localScale = new Vector3 (2 * width, 2 * height, 1);
+		transform.localScale = new Vector3 (20 * width, 20 * height, 1);
+		GetComponent<Renderer> ().material.mainTextureScale = new Vector2 (80, 80);
 	}
 
 }
