@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
 	public void Reset ()
 	{
 		score = 0;
-		time = 6 * 60f;
+		time = 2 * 60f;
 		SetScoreText ();
 		SetWinText ("");
 		transform.position = new Vector3 (cityMapWidth / 2, 1f, -10f);
