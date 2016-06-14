@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
 	public float cityMapWidth = 100f;
 	public int pickUpsCount;
 	public AudioClip screamClip;
-	AudioSource screamSource;
+	public AudioClip tingClip;
+
+	AudioSource audioSource;
 
 	private int score;
 	private float time = 0f;
@@ -27,7 +29,7 @@ public class Player : MonoBehaviour
 		maxAccelerationTime = 5;
 		accelerationTime = 0;
 
-		screamSource = GetComponent<AudioSource>();
+		audioSource = GetComponent<AudioSource>();
 
 		Reset ();
 	}
@@ -74,12 +76,13 @@ public class Player : MonoBehaviour
 			other.gameObject.SetActive (false);
 			score += 1;
 			time += 5;
+			audioSource.PlayOneShot(tingClip, 1.0F);
 			SetScoreText ();
 		} else if (other.gameObject.CompareTag ("Human") && Math.Abs(verticalAcceleration) > 0.1f) {
 			Human human = other.GetComponent<Human>();
 			if (human.isAlive ()) {
 				time -= 10;
-				screamSource.PlayOneShot(screamClip, 1.0F);
+				audioSource.PlayOneShot(screamClip, 1.0F);
 			}
 
 			human.kill ();
