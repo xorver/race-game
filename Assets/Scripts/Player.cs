@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
 
 	void Start ()
 	{
-		maxAccelerationTime = 3;
+		maxAccelerationTime = 5;
 		accelerationTime = 0;
 
 		Reset ();
@@ -78,6 +78,17 @@ public class Player : MonoBehaviour
 			human.kill ();
 		}
 	}
+
+
+	void OnCollisionStay (Collision col)
+	{
+		if(col.gameObject.tag == "Building")
+		{
+			if (accelerationTime > 0.5f)
+				accelerationTime = Math.Max(0.5f, accelerationTime - 0.5f);
+		}
+	}
+
 
 	public void Reset ()
 	{
